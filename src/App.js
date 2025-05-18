@@ -37,7 +37,7 @@ function App() {
     if (!current || selected) return;
     setSelected(option);
     if (option === current.answer) {
-      setScore((prev) => prev + 10);
+      setScore(prev => prev + 10);
       setFeedback('✅ Correct! +10 XP');
     } else {
       setFeedback('❌ Oops! Try the next one.');
@@ -45,7 +45,7 @@ function App() {
     setTimeout(() => {
       setSelected(null);
       setFeedback('');
-      setStep((prevStep) => prevStep + 1);
+      setStep(prev => prev + 1);
     }, 1000);
   };
 
@@ -69,9 +69,7 @@ function App() {
         <>
           <h2 className="title">📘 {current.title}</h2>
           <p className="content">{current.content}</p>
-          <p className="question">
-            <strong>{current.question}</strong>
-          </p>
+          <p className="question"><strong>{current.question}</strong></p>
           <div className="options-grid">
             {current.options.map((opt) => {
               const isCorrect = selected === opt && opt === current.answer;
@@ -92,10 +90,7 @@ function App() {
       )}
       {feedback && <div className="feedback">{feedback}</div>}
       <div className="progress-bar">
-        <div
-          className="progress"
-          style={{ width: `${((step + 1) / lessons.length) * 100}%` }}
-        ></div>
+        <div className="progress" style={{ width: `${((step + 1) / lessons.length) * 100}%` }}></div>
       </div>
     </div>
   );
