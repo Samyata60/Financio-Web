@@ -32,9 +32,10 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState('');
 
-  const current = lessons[step];
+  const current = step < lessons.length ? lessons[step] : null;
 
   const handleAnswer = (option) => {
+    if (!current) return;
     setSelected(option);
     if (option === current.answer) {
       setScore(score + 10); // XP system
@@ -65,21 +66,25 @@ function App() {
         <span>Financio 💸</span>
         <span className="xp">XP: {score}</span>
       </div>
-      <h2 className="title">📘 {current.title}</h2>
-      <p className="content">{current.content}</p>
-      <p className="question"><strong>{current.question}</strong></p>
-      <div className="options-grid">
-        {current.options.map((opt) => (
-          <button
-            key={opt}
-            className={`option-btn ${selected === opt ? (opt === current.answer ? 'correct' : 'wrong') : ''}`}
-            onClick={() => handleAnswer(opt)}
-            disabled={!!selected}
-          >
-            {opt}
-          </button>
-        ))}
-      </div>
+      {current && (
+        <>
+          <h2 className="title">📘 {current.title}</h2>
+          <p className="content">{current.content}</p>
+          <p className="question"><strong>{current.question}</strong></p>
+          <div className="options-grid">
+            {current.options.map((opt) => (
+              <button
+                key={opt}
+                className={`option-btn ${selected === opt ? (opt === current.answer ? 'correct' : 'wrong') : ''}`}
+                onClick={() => handleAnswer(opt)}
+                disabled={!!selected}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
       {feedback && <div className="feedback">{feedback}</div>}
       <div className="progress-bar">
         <div className="progress" style={{ width: `${((step + 1) / lessons.length) * 100}%` }}></div>
