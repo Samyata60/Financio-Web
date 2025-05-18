@@ -26,7 +26,7 @@ const lessons = [
   }
 ];
 
-export default function App() {
+function App() {
   const [step, setStep] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -45,7 +45,7 @@ export default function App() {
     setTimeout(() => {
       setSelected(null);
       setFeedback('');
-      setStep(step + 1);
+      setStep(prevStep => prevStep + 1);
     }, 1000);
   };
 
@@ -61,7 +61,10 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <div className="header">Financio 💸 <span className="xp">XP: {score}</span></div>
+      <div className="header">
+        <span>Financio 💸</span>
+        <span className="xp">XP: {score}</span>
+      </div>
       <h2 className="title">📘 {current.title}</h2>
       <p className="content">{current.content}</p>
       <p className="question"><strong>{current.question}</strong></p>
@@ -71,6 +74,7 @@ export default function App() {
             key={opt}
             className={`option-btn ${selected === opt ? (opt === current.answer ? 'correct' : 'wrong') : ''}`}
             onClick={() => handleAnswer(opt)}
+            disabled={!!selected}
           >
             {opt}
           </button>
@@ -83,3 +87,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
