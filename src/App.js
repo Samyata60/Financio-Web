@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const lessons = [
@@ -31,21 +31,26 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState('');
 
+  useEffect(() => {
+    if (step >= lessons.length) {
+      setSelected(null);
+      setFeedback('');
+    }
+  }, [step]);
+
   const current = step < lessons.length ? lessons[step] : null;
 
   const handleAnswer = (option) => {
-    if (!current || selected) return;
+    if (!current || selected !== null) return;
     setSelected(option);
     if (option === current.answer) {
-      setScore(prev => prev + 10);
+      setScore((prev) => prev + 10);
       setFeedback('✅ Correct! +10 XP');
     } else {
       setFeedback('❌ Oops! Try the next one.');
     }
     setTimeout(() => {
-      setSelected(null);
-      setFeedback('');
-      setStep(prev => prev + 1);
+      setStep((prev) => prev + 1);
     }, 1000);
   };
 
@@ -79,7 +84,7 @@ function App() {
                   key={opt}
                   className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
                   onClick={() => handleAnswer(opt)}
-                  disabled={!!selected}
+                  disabled={selected !== null}
                 >
                   {opt}
                 </button>
@@ -90,7 +95,7 @@ function App() {
       )}
       {feedback && <div className="feedback">{feedback}</div>}
       <div className="progress-bar">
-        <div className="progress" style={{ width: `${((step + 1) / lessons.length) * 100}%` }}></div>
+        <div className="progress" style={{ width: `${((step) / lessons.length) * 100}%` }}></div>
       </div>
     </div>
   );
