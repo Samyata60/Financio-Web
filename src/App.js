@@ -38,7 +38,7 @@ function App() {
     if (!current) return;
     setSelected(option);
     if (option === current.answer) {
-      setScore(score + 10); // XP system
+      setScore((prev) => prev + 10); // XP system
       setFeedback('✅ Correct! +10 XP');
     } else {
       setFeedback('❌ Oops! Try the next one.');
@@ -46,7 +46,7 @@ function App() {
     setTimeout(() => {
       setSelected(null);
       setFeedback('');
-      setStep(prevStep => prevStep + 1);
+      setStep((prevStep) => prevStep + 1);
     }, 1000);
   };
 
@@ -66,28 +66,37 @@ function App() {
         <span>Financio 💸</span>
         <span className="xp">XP: {score}</span>
       </div>
-      {current && (
+      {current ? (
         <>
           <h2 className="title">📘 {current.title}</h2>
           <p className="content">{current.content}</p>
-          <p className="question"><strong>{current.question}</strong></p>
+          <p className="question">
+            <strong>{current.question}</strong>
+          </p>
           <div className="options-grid">
-            {current.options.map((opt) => (
-              <button
-                key={opt}
-                className={`option-btn ${selected === opt ? (opt === current.answer ? 'correct' : 'wrong') : ''}`}
-                onClick={() => handleAnswer(opt)}
-                disabled={!!selected}
-              >
-                {opt}
-              </button>
-            ))}
+            {current.options.map((opt) => {
+              const isCorrect = selected === opt && opt === current.answer;
+              const isWrong = selected === opt && opt !== current.answer;
+              return (
+                <button
+                  key={opt}
+                  className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                  onClick={() => handleAnswer(opt)}
+                  disabled={!!selected}
+                >
+                  {opt}
+                </button>
+              );
+            })}
           </div>
         </>
-      )}
+      ) : null}
       {feedback && <div className="feedback">{feedback}</div>}
       <div className="progress-bar">
-        <div className="progress" style={{ width: `${((step + 1) / lessons.length) * 100}%` }}></div>
+        <div
+          className="progress"
+          style={{ width: `${((step + 1) / lessons.length) * 100}%` }}
+        ></div>
       </div>
     </div>
   );
