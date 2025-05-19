@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const lessons = [
@@ -47,7 +47,7 @@ function App() {
 
     setSelected(option);
     if (option === current.answer) {
-      setScore(prev => prev + 10);
+      setScore((prev) => prev + 10);
       setFeedback('✅ Correct! +10 XP');
     } else {
       setFeedback('❌ Oops! Try the next one.');
@@ -56,7 +56,7 @@ function App() {
     timeoutRef.current = setTimeout(() => {
       setSelected(null);
       setFeedback('');
-      setStep(prev => prev + 1);
+      setStep((prev) => prev + 1);
     }, 1000);
   };
 
