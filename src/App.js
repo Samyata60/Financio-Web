@@ -75,26 +75,30 @@ function App() {
         <span className="xp">XP: {score}</span>
       </div>
 
-      <h2 className="title">📘 {current.title}</h2>
-      <p className="content">{current.content}</p>
-      <p className="question"><strong>{current.question}</strong></p>
+      {current && (
+        <>
+          <h2 className="title">📘 {current.title}</h2>
+          <p className="content">{current.content}</p>
+          <p className="question"><strong>{current.question}</strong></p>
 
-      <div className="options-grid">
-        {current.options.map((opt) => {
-          const isCorrect = selected === opt && opt === current.answer;
-          const isWrong = selected === opt && opt !== current.answer;
-          return (
-            <button
-              key={opt}
-              className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
-              onClick={() => handleAnswer(opt)}
-              disabled={selected !== null}
-            >
-              {opt}
-            </button>
-          );
-        })}
-      </div>
+          <div className="options-grid">
+            {current.options.map((opt) => {
+              const isCorrect = selected === opt && opt === current.answer;
+              const isWrong = selected === opt && opt !== current.answer;
+              return (
+                <button
+                  key={opt}
+                  className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                  onClick={() => handleAnswer(opt)}
+                  disabled={selected !== null}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {feedback && <div className="feedback">{feedback}</div>}
 
