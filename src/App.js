@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 const lessons = [
@@ -36,14 +36,14 @@ function App() {
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
 
   const handleAnswer = (option) => {
     if (!current || selected !== null) return;
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     setSelected(option);
     if (option === current.answer) {
@@ -76,32 +76,31 @@ function App() {
         <span>Financio 💸</span>
         <span className="xp">XP: {score}</span>
       </div>
-      {current && (
-        <>
-          <h2 className="title">📘 {current.title}</h2>
-          <p className="content">{current.content}</p>
-          <p className="question"><strong>{current.question}</strong></p>
-          <div className="options-grid">
-            {current.options.map((opt) => {
-              const isCorrect = selected === opt && opt === current.answer;
-              const isWrong = selected === opt && opt !== current.answer;
-              return (
-                <button
-                  key={opt}
-                  className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
-                  onClick={() => handleAnswer(opt)}
-                  disabled={selected !== null}
-                >
-                  {opt}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      )}
+      <h2 className="title">📘 {current.title}</h2>
+      <p className="content">{current.content}</p>
+      <p className="question"><strong>{current.question}</strong></p>
+      <div className="options-grid">
+        {current.options.map((opt) => {
+          const isCorrect = selected === opt && opt === current.answer;
+          const isWrong = selected === opt && opt !== current.answer;
+          return (
+            <button
+              key={opt}
+              className={`option-btn ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+              onClick={() => handleAnswer(opt)}
+              disabled={selected !== null}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
       {feedback && <div className="feedback">{feedback}</div>}
       <div className="progress-bar">
-        <div className="progress" style={{ width: `${(step / lessons.length) * 100}%` }}></div>
+        <div
+          className="progress"
+          style={{ width: `${(step / lessons.length) * 100}%` }}
+        ></div>
       </div>
     </div>
   );
